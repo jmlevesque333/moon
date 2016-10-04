@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+int main()
+{
+	int maxi;
+	int nombreDePair;
+	int a;
+	int b;
+	
+	cin >> maxi;
+	cin >> nombreDePair;
+	
+	vector <int*> astronaut(maxi+1, NULL);
+	for(int i = 0; i < nombreDePair; i++)
+	{
+		cin >> a;
+		cin >> b;
+		if(astronaut[a] == NULL)
+		{
+			if(astronaut[b] == NULL)
+			{
+				int temp1 = a;
+				int* temp = &temp1;
+				astronaut[a] = temp;
+				astronaut[b] = temp;
+			}
+			else
+			{
+				astronaut[a] = astronaut[b];
+			}
+		}
+		else
+		{
+			if(astronaut[b] == NULL)
+			{
+				astronaut[b] = astronaut[a];
+			}
+			else
+			{
+				int* temp3 = astronaut[b];
+				for(int j = 0; j < nombreDePair; j++)
+				{
+					if(astronaut[j] == temp3)
+					{
+						astronaut[j] = astronaut[a];
+					}
+				}
+			}
+		}
+		
+	}
+	
+	int sol;
+	int count = 0;
+	int notCalced = 0;
+	vector<int> endGraph(maxi, 0);
+	for(int i =0; i < maxi; i++)
+	{
+		for(int j =0; j < maxi; j++)
+		{
+			if(*astronaut[j] == i)
+			{
+				count++;
+			}
+		}
+		endGraph[i] = count;
+	}
+	for(int y =0; y < endGraph.size(); y++)
+	{
+			notCalced += endGraph[y];
+	}
+	for(int x =0; x < endGraph.size(); x++)
+	{
+		notCalced -= endGraph[x];
+		sol = endGraph[x]*notCalced;
+	}
+	cout << sol;
+	return 0;
+}
